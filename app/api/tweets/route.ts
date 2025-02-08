@@ -24,6 +24,7 @@ export async function POST(req: Request) {
     case 'sync':
       await app.sync();
       return NextResponse.json(null, { status: 200, headers: GENERAL_HEADERS })
+
     case 'like':
       if (!body.id) {
         return NextResponse.json({ error: 'No id' }, { status: 405 })

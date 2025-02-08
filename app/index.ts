@@ -1,8 +1,8 @@
-import syncUserTweets from '../lib/jobs/user-tweets'
-import db from '../lib/storage'
+import syncUserTweets from '@/lib/jobs/user-tweets'
+import db from '@/lib/storage'
+import './cron'
 
 class App {
-
 
   async sync() {
     return await syncUserTweets()
