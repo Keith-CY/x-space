@@ -27,11 +27,11 @@ class Firebase {
   }
 
   addTweet = async (id: string, attrs: Record<string, string>) => {
-    return await this._db.ref(`${this._refPath}/${id}`).set({
-      like: 0,
-      dislike: 0,
-      ...attrs,
-    })
+    const snapshot = await this._db.ref(`${this._refPath}/${id}`).once('value')
+    if (snapshot.exists()) {
+      return
+    }
+    return await this._db.ref(`${this._refPath}/${id}`).set(attrs)
   }
 
   likeTweet = async (id: string) => {
