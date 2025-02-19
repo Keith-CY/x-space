@@ -22,7 +22,7 @@ export async function POST(req: Request) {
 
   switch (body.method) {
     case 'sync':
-      await app.sync();
+      app.sync();
       return NextResponse.json(null, { status: 200, headers: GENERAL_HEADERS })
 
     case 'like':

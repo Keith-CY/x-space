@@ -17,7 +17,6 @@ const main = async () => {
         count: 3,
       })
       ts.data.data.forEach(t => {
-        if (t.retweeted) { return }
         const { legacy } = t.tweet
         if (!legacy) { return }
         const tweetId = legacy.conversationIdStr

@@ -6,7 +6,6 @@ export async function GET(request: Request) {
   const cronSecret = process.env.CRON_SECRET
 
   if (!cronSecret) {
-    console.error('CRON_SECRET environment variable not set')
     return NextResponse.json(
       { error: 'Server configuration error' },
       { status: 500 }
