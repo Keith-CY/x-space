@@ -2,12 +2,15 @@ import accounts from '../../data/accounts.json'
 import { client } from '../client'
 import db from '../storage'
 
+const keywords = process.env.X_KEYWORDS?.split(',') || []
+
 const main = async () => {
   const x = await client.connect()
 
   const tweets = new Map<string /* tweet id */, {
     timestamp: string /* timestamp */,
     url: string /* url */
+    isMatch: string /* match airdrop etc. */
   }>()
 
   for (const account of accounts) {
@@ -23,7 +26,8 @@ const main = async () => {
         const timestamp = (+new Date(legacy.createdAt)).toString()
         if (tweetId) {
           const url = `${account.url}/status/${tweetId}`
-          tweets.set(tweetId, { timestamp, url, })
+          const isMatch = keywords.find(k => legacy.fullText.toLowerCase().includes(k))
+          tweets.set(tweetId, { timestamp, url, isMatch: isMatch ?? '' })
         }
       })
     } catch (e: unknown) {

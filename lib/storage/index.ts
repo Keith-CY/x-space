@@ -1,4 +1,5 @@
 import admin from 'firebase-admin'
+import { sendToDiscord } from '../discord'
 
 const FIREBASE_AUTH = process.env.FIREBASE_AUTH
 const FIREBASE_REALTIME_DATABSE = process.env.FIREBASE_REALTIME_DATABSE
@@ -26,11 +27,16 @@ class Firebase {
     this._db = admin.database()
   }
 
-  addTweet = async (id: string, attrs: Record<string, string>) => {
+  addTweet = async (id: string, { isMatch, ...attrs }: Record<string, string>) => {
     const snapshot = await this._db.ref(`${this._refPath}/${id}`).once('value')
     if (snapshot.exists()) {
       return
     }
+
+    if (isMatch && attrs.url) {
+      sendToDiscord({ content: `🔍 New Post about "${isMatch}": ${attrs.url}` })
+    }
+
     return await this._db.ref(`${this._refPath}/${id}`).set(attrs)
   }
 
