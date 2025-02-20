@@ -20,7 +20,7 @@ export async function GET(request: Request) {
   }
 
   try {
-    app.sync();
+    await app.sync();
     return NextResponse.json(
       { success: true },
       { status: 200 }
